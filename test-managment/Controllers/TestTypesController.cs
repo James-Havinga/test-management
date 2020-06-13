@@ -78,23 +78,44 @@ namespace test_managment.Controllers
         // GET: TestTypes/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (!_repo.isExists(id))
+            {
+                return NotFound();
+            }
+            var testType = _repo.FindById(id);
+            var model = _mapper.Map<TestTypeVM>(testType);
+
+            return View(model);
         }
 
         // POST: TestTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(TestTypeVM model)
         {
             try
             {
                 // TODO: Add update logic here
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var testType = _mapper.Map<TestType>(model);
+                var isSuccess = _repo.Update(testType);
+
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong...");
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong...");
+                return View(model);
             }
         }
 
