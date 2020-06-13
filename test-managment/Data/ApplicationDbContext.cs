@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using test_managment.Models;
 
 namespace test_managment.Data
 {
@@ -17,6 +18,7 @@ namespace test_managment.Data
         public DbSet<TestHistory> TestHistories { get; set; }
         public DbSet<TestType> TestTypes { get; set; }
         public DbSet<TestAllocation> TestAllocations { get; set; }
+        public DbSet<test_managment.Models.DetailsTestTypeVM> DetailsTestTypeVM { get; set; }
 
     }
 }

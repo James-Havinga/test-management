@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using test_managment.Contracts;
+using test_managment.Data;
+using test_managment.Models;
 
 namespace test_managment.Controllers
 {
@@ -23,7 +25,9 @@ namespace test_managment.Controllers
         // GET: TestTypes
         public ActionResult Index()
         {
-            return View();
+            var testTypes = _repo.FindAll().ToList();
+            var model = _mapper.Map<List<TestType>, List<DetailsTestTypeVM>>(testTypes);
+            return View(model);
         }
 
         // GET: TestTypes/Details/5
