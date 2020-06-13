@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace test_managment.Models
 {
-    public class DetailsTestTypeVM
+    public class TestTypeVM
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         [Display(Name="Date Created")]
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
     }
 
-    public class CreateTestTypeVM
-    {
-        [Required]
-        public string Names { get; set; }
-    }
+    
 }

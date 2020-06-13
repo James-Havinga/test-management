@@ -18,7 +18,7 @@ namespace test_managment.Data
         public DbSet<TestHistory> TestHistories { get; set; }
         public DbSet<TestType> TestTypes { get; set; }
         public DbSet<TestAllocation> TestAllocations { get; set; }
-        public DbSet<test_managment.Models.DetailsTestTypeVM> DetailsTestTypeVM { get; set; }
+        public DbSet<test_managment.Models.TestTypeVM> DetailsTestTypeVM { get; set; }
 
     }
 }

@@ -26,7 +26,7 @@ namespace test_managment.Controllers
         public ActionResult Index()
         {
             var testTypes = _repo.FindAll().ToList();
-            var model = _mapper.Map<List<TestType>, List<DetailsTestTypeVM>>(testTypes);
+            var model = _mapper.Map<List<TestType>, List<TestTypeVM>>(testTypes);
             return View(model);
         }
 
@@ -45,17 +45,33 @@ namespace test_managment.Controllers
         // POST: TestTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(TestTypeVM model)
         {
             try
             {
                 // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var testType = _mapper.Map<TestType>(model);
+                testType.DateCreated = DateTime.Now;
+
+                var isSuccess = _repo.Create(testType);
+
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong...");
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong...");
+                return View(model);
             }
         }
 

@@ -14,7 +14,7 @@ namespace test_managment.Models
         public string RequestingPatientId { get; set; }
         [Required]
         public DateTime TestDate { get; set; }
-        public DetailsTestTypeVM TestType { get; set; }
+        public TestTypeVM TestType { get; set; }
         public int TestTypeId { get; set; }
         public IEnumerable<SelectListItem> TestTypes { get; set; }
         public DateTime DateRequested { get; set; }
