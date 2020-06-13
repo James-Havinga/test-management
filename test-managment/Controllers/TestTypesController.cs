@@ -33,7 +33,14 @@ namespace test_managment.Controllers
         // GET: TestTypes/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (!_repo.isExists(id))
+            {
+                return NotFound();
+            }
+
+            var testType = _repo.FindById(id);
+            var model = _mapper.Map<TestTypeVM>(testType);
+            return View(model);
         }
 
         // GET: TestTypes/Create
