@@ -129,23 +129,51 @@ namespace test_managment.Controllers
         // GET: TestTypes/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+
+            var testType = _repo.FindById(id);
+            var isSuccess = _repo.Delete(testType);
+
+            if (testType == null)
+            {
+                return NotFound();
+            }
+
+            if (!isSuccess)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: TestTypes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, TestTypeVM model)
         {
             try
             {
                 // TODO: Add delete logic here
+                var testType = _repo.FindById(id);
+                var isSuccess = _repo.Delete(testType);
+
+                if (testType == null)
+                {
+                    return NotFound();
+                }
+
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong...");
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong...");
+                return View(model);
             }
         }
     }
