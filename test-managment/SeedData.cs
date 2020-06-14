@@ -22,7 +22,7 @@ namespace test_managment
                 var user = new IdentityUser
                 {
                     UserName = "admin",
-                    Email = "admin@localhost"
+                    Email = "admin@localhost.com"
                 };
                 var result = userManager.CreateAsync(user, "P@ssword1").Result;
                 if (result.Succeeded)

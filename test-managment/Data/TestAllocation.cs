@@ -12,6 +12,7 @@ namespace test_managment.Data
     {
         [Key]
         public int Id { get; set; }
+        public int NumberOfDays { get; set; }
         public DateTime DateTested { get; set; }
         [ForeignKey("PatientId")]
         public Patient Patient { get; set; }
@@ -19,5 +20,6 @@ namespace test_managment.Data
         [ForeignKey("TestTypeId")]
         public TestType TestType { get; set; }
         public int TestTypeId { get; set; }
+        public int Period { get; set; }
     }
 }
