@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using test_managment.Contracts;
@@ -11,6 +12,7 @@ using test_managment.Models;
 
 namespace test_managment.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class TestTypesController : Controller
     {
         private readonly ITestTypeRepository _repo;
@@ -22,6 +24,7 @@ namespace test_managment.Controllers
             _mapper = mapper;
         }
 
+        
         // GET: TestTypes
         public ActionResult Index()
         {
