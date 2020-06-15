@@ -15,6 +15,13 @@ namespace test_managment.Respository
         {
             _db = db;
         }
+
+        public bool CheckAllocation(int testTypeId, string patientId)
+        {
+            var period = DateTime.Now.Year;
+            return FindAll().Where(q => q.PatientId == patientId && q.TestTypeId == testTypeId && q.Period == period).Any();
+        }
+
         public bool Create(TestAllocation entity)
         {
             _db.TestAllocations.Add(entity);

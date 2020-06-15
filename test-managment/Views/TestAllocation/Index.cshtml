@@ -1,0 +1,32 @@
+﻿@model test_managment.Models.CreateTestAllocationVM
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Test Types
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TestTypes) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Allocate To Patients", "SetTest", new { id=item.Id })
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>

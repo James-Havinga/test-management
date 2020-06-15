@@ -8,5 +8,6 @@ namespace test_managment.Contracts
 {
     public interface ITestAllocationRepository : IRepositoryBase<TestAllocation>
     {
+        bool CheckAllocation(int testTypeId, string patientId);
     }
 }

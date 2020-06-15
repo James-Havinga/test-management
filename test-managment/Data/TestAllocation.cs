@@ -13,7 +13,7 @@ namespace test_managment.Data
         [Key]
         public int Id { get; set; }
         public int NumberOfDays { get; set; }
-        public DateTime DateTested { get; set; }
+        public DateTime DateCreated { get; set; }
         [ForeignKey("PatientId")]
         public Patient Patient { get; set; }
         public string PatientId { get; set; }
