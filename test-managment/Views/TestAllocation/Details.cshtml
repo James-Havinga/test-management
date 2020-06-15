@@ -1,0 +1,81 @@
+﻿@model test_managment.Models.ViewAllocationsVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details For - @Model.Patient.FirstName @Model.Patient.LastName</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.IdNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.IdNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient.DateJoined)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Patient.DateJoined)
+        </dd>
+    </dl>
+</div>
+
+
+<hr />
+
+<h2>Test Allocations</h2>
+
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.TestAllocations)
+            {
+                <li class="list-group-item">
+                    <h6>@item.TestType.Name <span class="badge badge-secondary">@item.NumberOfDays</span> | <a class="btn btn-outline-warning"><i class="fa fa-pencil"></i> Edit</a></h6>
+                </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+

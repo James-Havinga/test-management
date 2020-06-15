@@ -1,4 +1,5 @@
-﻿@inject SignInManager<Patient> SignInManager
+﻿@using test_managment.Data
+@inject SignInManager<Patient> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

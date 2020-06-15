@@ -47,6 +47,7 @@ namespace test_managment.Controllers
             return View(model);
         }
 
+
         public ActionResult SetTest(int id)
         {
             var testType = _testrepo.FindById(id);
@@ -76,11 +77,20 @@ namespace test_managment.Controllers
             return View(model);
         }
 
-        // GET: TestAllocation/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var patient = _mapper.Map<PatientVM>(_userManager.FindByIdAsync(id).Result);
+            var allocations = _mapper.Map<List<TestAllocationVM>>(_testallocationrepo.GetTestAllocationsByPatient(id));
+            var model = new ViewAllocationsVM
+            {
+                Patient = patient,
+                TestAllocations = allocations
+            };
+            return View(model);
         }
+
+        // GET: TestAllocation/Details/5
+
 
         // GET: TestAllocation/Create
         public ActionResult Create()

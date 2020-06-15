@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace test_managment.Respository
 
         public ICollection<TestAllocation> FindAll()
         {
-            var testAllocations = _db.TestAllocations.ToList();
+            var testAllocations = _db.TestAllocations.Include(q => q.TestType).ToList();
             return testAllocations;
         }
 
@@ -44,6 +45,14 @@ namespace test_managment.Respository
         {
             var testAllocations = _db.TestAllocations.Find(id);
             return testAllocations;
+        }
+
+        public ICollection<TestAllocation> GetTestAllocationsByPatient(string id)
+        {
+            var period = DateTime.Now.Year;
+            return FindAll()
+                .Where(q => q.PatientId == id && q.Period == period)
+                .ToList();
         }
 
         public bool isExists(int id)
