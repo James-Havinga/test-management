@@ -118,23 +118,36 @@ namespace test_managment.Controllers
         // GET: TestAllocation/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var testAllocation = _testallocationrepo.FindById(id);
+            var model = _mapper.Map<EditTestAllocationVM>(testAllocation);
+            return View(model);
         }
 
         // POST: TestAllocation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EditTestAllocationVM model)
         {
             try
             {
-                // TODO: Add update logic here
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var record = _testallocationrepo.FindById(model.Id);
+                record.NumberOfDays = model.NumberOfDays;
+                var isSuccess = _testallocationrepo.Update(record);
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Error while saving");
+                    return View(model);
+                }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = model.PatientId });
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
 

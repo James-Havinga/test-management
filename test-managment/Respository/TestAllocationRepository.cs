@@ -37,13 +37,19 @@ namespace test_managment.Respository
 
         public ICollection<TestAllocation> FindAll()
         {
-            var testAllocations = _db.TestAllocations.Include(q => q.TestType).ToList();
+            var testAllocations = _db.TestAllocations
+                .Include(q => q.TestType)
+                .Include(q => q.Patient)
+                .ToList();
             return testAllocations;
         }
 
         public TestAllocation FindById(int id)
         {
-            var testAllocations = _db.TestAllocations.Find(id);
+            var testAllocations = _db.TestAllocations
+                .Include(q => q.TestType)
+                .Include(q => q.Patient)
+                .FirstOrDefault(q => q.Id == id);
             return testAllocations;
         }
 

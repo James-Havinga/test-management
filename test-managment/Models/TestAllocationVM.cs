@@ -27,6 +27,15 @@ namespace test_managment.Models
         public List<TestTypeVM> TestTypes { get; set; }
     }
 
+    public class EditTestAllocationVM
+    {
+        public int Id { get; set; }
+        public int NumberOfDays { get; set; }
+        public PatientVM Patient { get; set; }
+        public string PatientId { get; set; }
+        public TestTypeVM TestType { get; set; }
+    }
+
     public class ViewAllocationsVM
     {
         public PatientVM Patient { get; set; }
