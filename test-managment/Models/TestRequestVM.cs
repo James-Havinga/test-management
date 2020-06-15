@@ -25,9 +25,13 @@ namespace test_managment.Models
 
     public class AdminTestRequestViewVM
     {
+        [Display(Name = "Total Number Of Requsts")]
         public int TotalRequests { get; set; }
+        [Display(Name = "Approved Requests")]
         public int ApprovedRequests { get; set; }
+        [Display(Name = "Pending Requests")]
         public int PendingRequests { get; set; }
+        [Display(Name = "Rejected Requests")]
         public int RejectedRequests { get; set; }
         public List<TestRequestVM> TestRequests { get; set; }
     }
