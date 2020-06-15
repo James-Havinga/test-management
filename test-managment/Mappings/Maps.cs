@@ -15,7 +15,7 @@ namespace test_managment.Mappings
             CreateMap<TestType, TestTypeVM>().ReverseMap();
             CreateMap<TestAllocation, TestAllocationVM>().ReverseMap();
             CreateMap<TestAllocation, EditTestAllocationVM>().ReverseMap();
-            CreateMap<TestHistory, TestHistoryVM>().ReverseMap();
+            CreateMap<TestRequest, TestRequestVM>().ReverseMap();
             CreateMap<Patient, PatientVM>().ReverseMap();
         }
     }

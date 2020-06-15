@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace test_managment.Data
 {
-    public class TestHistory
+    public class TestRequest
     {
         [Key]
         public int Id { get; set; }

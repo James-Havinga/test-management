@@ -15,27 +15,27 @@ namespace test_managment.Respository
         {
             _db = db;
         }
-        public bool Create(TestHistory entity)
+        public bool Create(TestRequest entity)
         {
-            _db.TestHistories.Add(entity);
+            _db.TestRequests.Add(entity);
             return Save();
         }
 
-        public bool Delete(TestHistory entity)
+        public bool Delete(TestRequest entity)
         {
-            _db.TestHistories.Remove(entity);
+            _db.TestRequests.Remove(entity);
             return Save();
         }
 
-        public ICollection<TestHistory> FindAll()
+        public ICollection<TestRequest> FindAll()
         {
-            var testHistories = _db.TestHistories.ToList();
+            var testHistories = _db.TestRequests.ToList();
             return testHistories;
         }
 
-        public TestHistory FindById(int id)
+        public TestRequest FindById(int id)
         {
-            var testHistories = _db.TestHistories.Find(id);
+            var testHistories = _db.TestRequests.Find(id);
             return testHistories;
         }
 
@@ -51,9 +51,9 @@ namespace test_managment.Respository
             return changes > 0;
         }
 
-        public bool Update(TestHistory entity)
+        public bool Update(TestRequest entity)
         {
-            _db.TestHistories.Update(entity);
+            _db.TestRequests.Update(entity);
             return Save();
         }
     }

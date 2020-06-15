@@ -6,7 +6,7 @@ using test_managment.Data;
 
 namespace test_managment.Contracts
 {
-    public interface ITestHistoryRepository : IRepositoryBase<TestHistory>
+    public interface ITestHistoryRepository : IRepositoryBase<TestRequest>
     {
     }
 }

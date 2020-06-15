@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace test_managment.Models
 {
-    public class TestHistoryVM
+    public class TestRequestVM
     {
         public int Id { get; set; }
         public PatientVM RequestingPatient { get; set; }
