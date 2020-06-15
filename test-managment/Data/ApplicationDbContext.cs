@@ -18,6 +18,7 @@ namespace test_managment.Data
         public DbSet<TestRequest> TestRequests { get; set; }
         public DbSet<TestType> TestTypes { get; set; }
         public DbSet<TestAllocation> TestAllocations { get; set; }
+        public DbSet<test_managment.Models.TestAllocationVM> TestAllocationVM { get; set; }
 
     }
 }

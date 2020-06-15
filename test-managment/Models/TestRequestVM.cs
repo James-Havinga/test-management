@@ -12,7 +12,6 @@ namespace test_managment.Models
         public int Id { get; set; }
         public PatientVM RequestingPatient { get; set; }
         public string RequestingPatientId { get; set; }
-        [Required]
         public DateTime TestDate { get; set; }
         public TestTypeVM TestType { get; set; }
         public int TestTypeId { get; set; }
@@ -22,5 +21,14 @@ namespace test_managment.Models
         public bool? Approved { get; set; }
         public PatientVM ApprovedBy { get; set; }
         public string ApprovedById { get; set; }
+    }
+
+    public class AdminTestRequestViewVM
+    {
+        public int TotalRequests { get; set; }
+        public int ApprovedRequests { get; set; }
+        public int PendingRequests { get; set; }
+        public int RejectedRequests { get; set; }
+        public List<TestRequestVM> TestRequests { get; set; }
     }
 }

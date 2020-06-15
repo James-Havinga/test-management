@@ -37,7 +37,7 @@ namespace test_managment
 
             // Add refrences for Repository and Contracts to Startup file
             services.AddScoped<ITestTypeRepository, TestTypeRepository>();
-            services.AddScoped<ITestHistoryRepository, TestHistoryRepository>();
+            services.AddScoped<ITestRequestRepository, TestRequestRepository>();
             services.AddScoped<ITestAllocationRepository, TestAllocationRepository>();
 
             services.AddAutoMapper(typeof(Maps));

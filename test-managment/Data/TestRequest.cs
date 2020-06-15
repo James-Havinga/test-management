@@ -11,7 +11,6 @@ namespace test_managment.Data
     {
         [Key]
         public int Id { get; set; }
-
         [ForeignKey("RequestingPatientId")]
         public Patient RequestingPatient { get; set; }
         public string RequestingPatientId { get; set; }

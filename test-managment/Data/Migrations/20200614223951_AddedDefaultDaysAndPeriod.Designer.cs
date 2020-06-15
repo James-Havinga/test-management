@@ -258,7 +258,7 @@ namespace test_managment.Data.Migrations
                     b.ToTable("TestAllocations");
                 });
 
-            modelBuilder.Entity("test_managment.Data.TestHistory", b =>
+            modelBuilder.Entity("test_managment.Data.TestRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -424,7 +424,7 @@ namespace test_managment.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("test_managment.Data.TestHistory", b =>
+            modelBuilder.Entity("test_managment.Data.TestRequest", b =>
                 {
                     b.HasOne("test_managment.Data.Patient", "ApprovedBy")
                         .WithMany()
