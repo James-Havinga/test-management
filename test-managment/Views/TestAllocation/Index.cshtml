@@ -24,7 +24,10 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("Allocate To Patients", "SetTest", new { id=item.Id })
+                    @* @Html.ActionLink("Allocate To Patients", "SetTest", new { id=item.Id })*@
+                    <a class="btn btn-outline-success" asp-action="SetTest" asp-route-id="@item.Id">
+                        <i class="fa fa-pencil"></i> Allocate To Patients
+                    </a>
                 </td>
             </tr>
 }

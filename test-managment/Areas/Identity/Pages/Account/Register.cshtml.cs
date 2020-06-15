@@ -20,14 +20,14 @@ namespace test_managment.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<Patient> _signInManager;
+        private readonly UserManager<Patient> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Patient> userManager,
+            SignInManager<Patient> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {

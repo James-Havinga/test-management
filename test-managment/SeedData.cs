@@ -3,26 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using test_managment.Data;
 
 namespace test_managment
 {
     public static class SeedData
     {
-        public static void Seed(UserManager<IdentityUser> userManager,
+        public static void Seed(UserManager<Patient> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
         }
 
-        private static void SeedUsers(UserManager<IdentityUser> userManager)
+        private static void SeedUsers(UserManager<Patient> userManager)
         {
-            if(userManager.FindByNameAsync("admin").Result == null)
+            if(userManager.FindByNameAsync("admin@gmail.com").Result == null)
             {
-                var user = new IdentityUser
+                var user = new Patient
                 {
-                    UserName = "admin",
-                    Email = "admin@localhost.com"
+                    UserName = "admin@gmail.com",
+                    Email = "admin@gmail.com"
                 };
                 var result = userManager.CreateAsync(user, "P@ssword1").Result;
                 if (result.Succeeded)
@@ -52,5 +53,6 @@ namespace test_managment
                var result =  roleManager.CreateAsync(role).Result;
             }
         }
+
     }
 }

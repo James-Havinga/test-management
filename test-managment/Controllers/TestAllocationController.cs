@@ -20,13 +20,13 @@ namespace test_managment.Controllers
         private readonly ITestTypeRepository _testrepo;
         private readonly ITestAllocationRepository _testallocationrepo;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Patient> _userManager;
 
         public TestAllocationController(
             ITestTypeRepository testrepo,
             ITestAllocationRepository testallocationrepo,
             IMapper mapper,
-            UserManager<IdentityUser> userManager)
+            UserManager<Patient> userManager)
         {
             _testrepo = testrepo;
             _testallocationrepo = testallocationrepo;
@@ -67,6 +67,13 @@ namespace test_managment.Controllers
                 _testallocationrepo.Create(testAllocation);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult ListPatients()
+        {
+            var patients = _userManager.GetUsersInRoleAsync("Patient").Result;
+            var model = _mapper.Map<List<PatientVM>>(patients);
+            return View(model);
         }
 
         // GET: TestAllocation/Details/5
