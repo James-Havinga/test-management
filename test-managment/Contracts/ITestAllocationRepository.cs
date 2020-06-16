@@ -10,5 +10,6 @@ namespace test_managment.Contracts
     {
         bool CheckAllocation(int testTypeId, string patientId);
         ICollection<TestAllocation> GetTestAllocationsByPatient(string id);
+        TestAllocation GetTestAllocationsByPatientAndType(string id, int testTypeId);
     }
 }

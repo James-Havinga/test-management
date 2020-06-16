@@ -35,4 +35,16 @@ namespace test_managment.Models
         public int RejectedRequests { get; set; }
         public List<TestRequestVM> TestRequests { get; set; }
     }
+
+    public class CreateTestRequestVM
+    {
+        [Display(Name = "Testing Date")]
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime TestDate { get; set; }
+        public IEnumerable<SelectListItem> TestTypes { get; set; }
+        [Display(Name ="Test Types")]
+        public int TestTypeId { get; set; }
+
+    }
 }

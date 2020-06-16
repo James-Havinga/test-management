@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using test_managment.Contracts;
 using test_managment.Data;
 using test_managment.Models;
@@ -17,16 +18,22 @@ namespace test_managment.Controllers
     public class TestRequestController : Controller
     {
         private readonly ITestRequestRepository _testRequestRepo;
+        private readonly ITestTypeRepository _testTypeRepo;
+        private readonly ITestAllocationRepository _testAllocationRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<Patient> _userManager;
 
         public TestRequestController(
             ITestRequestRepository testRequestRepo,
+            ITestTypeRepository testTypeRepo,
+            ITestAllocationRepository testAllocationRepository,
             IMapper mapper,
             UserManager<Patient> userManager
             )
         {
             _testRequestRepo = testRequestRepo;
+            _testTypeRepo = testTypeRepo;
+            _testAllocationRepository = testAllocationRepository;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -56,22 +63,66 @@ namespace test_managment.Controllers
         // GET: TestRequest/Create
         public ActionResult Create()
         {
-            return View();
+            var testTypes = _testTypeRepo.FindAll();
+            var testTypeItems = testTypes.Select(q => new SelectListItem
+            {
+                Text = q.Name,
+                Value = q.Id.ToString()
+            });
+            var model = new CreateTestRequestVM
+            {
+                TestTypes = testTypeItems
+            };
+            return View(model);
         }
 
         // POST: TestRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateTestRequestVM model)
         {
+            
             try
             {
-                // TODO: Add insert logic here
+                var testTypes = _testTypeRepo.FindAll();
+                var testTypeItems = testTypes.Select(q => new SelectListItem
+                {
+                    Text = q.Name,
+                    Value = q.Id.ToString()
+                });
+                model.TestTypes = testTypeItems;
 
-                return RedirectToAction(nameof(Index));
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                
+                var patient = _userManager.GetUserAsync(User).Result;
+                var allocation = _testAllocationRepository.GetTestAllocationsByPatientAndType(patient.Id, model.TestTypeId);
+
+                var testRequestModel = new TestRequestVM
+                {
+                    RequestingPatientId = patient.Id,
+                    TestDate = model.TestDate,
+                    Approved = null,
+                    DateActioned = DateTime.Now,
+                    DateRequested = DateTime.Now,
+                    TestTypeId = model.TestTypeId
+                };
+
+                var testRequest = _mapper.Map<TestRequest>(testRequestModel);
+                var isSuccess = _testRequestRepo.Create(testRequest);
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong");
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index),"Home");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("", "Something went wrong");
                 return View();
             }
         }

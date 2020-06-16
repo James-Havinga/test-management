@@ -61,6 +61,13 @@ namespace test_managment.Respository
                 .ToList();
         }
 
+        public TestAllocation GetTestAllocationsByPatientAndType(string id, int testTypeId)
+        {
+            var period = DateTime.Now.Year;
+            return FindAll()
+                .FirstOrDefault(q => q.PatientId == id && q.Period == period && q.TestTypeId == testTypeId);
+        }
+
         public bool isExists(int id)
         {
             var exists = _db.TestTypes.Any(q => q.Id == id);
