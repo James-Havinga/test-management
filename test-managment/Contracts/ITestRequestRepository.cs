@@ -8,5 +8,6 @@ namespace test_managment.Contracts
 {
     public interface ITestRequestRepository : IRepositoryBase<TestRequest>
     {
+        ICollection<TestRequest> GetTestRequestsByPatient(string patientid);
     }
 }

@@ -1,0 +1,76 @@
+﻿@model PatientTestRequestViewVM
+
+@{
+    ViewData["Title"] = "MyTest";
+}
+
+<h1>My Test Records</h1>
+
+<table id="tblData" class="table">
+    <thead>
+        <tr>
+            <th>
+                Test Type
+            </th>
+            <th>
+                Test Date
+            </th>
+            <th>
+                Date Requested
+            </th>
+            <th>
+                Approval Status
+            </th>
+            <th>
+                Cancel Request
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TestRequests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TestType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TestDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequested)
+                </td>
+                <td>
+                    @if (item.Approved == true)
+                    {
+                        <span class="badge badge-success">Approved</span>
+                    }
+                    else if (item.Approved == false)
+                    {
+                        <span class="badge badge-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Pending Approval</span>
+                    }
+                </td>
+                <td>
+                    @if(item.Approved == null)
+                    {
+                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to cancel this request?')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#tblData').DataTable();
+        });
+    </script>
+}

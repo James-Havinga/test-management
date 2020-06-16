@@ -48,6 +48,14 @@ namespace test_managment.Respository
             return testHistories;
         }
 
+        public ICollection<TestRequest> GetTestRequestsByPatient(string patientid)
+        {
+            var testRequests = FindAll()
+                .Where(q => q.RequestingPatientId == patientid)
+                .ToList();
+            return testRequests;
+        }
+
         public bool isExists(int id)
         {
             var exists = _db.TestTypes.Any(q => q.Id == id);

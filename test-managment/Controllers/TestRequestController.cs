@@ -54,6 +54,25 @@ namespace test_managment.Controllers
             return View(model);
         }
 
+        public ActionResult MyTest()
+        {
+            var patient = _userManager.GetUserAsync(User).Result;
+            var patientId = patient.Id;
+            var patientAllocations = _testAllocationRepository.GetTestAllocationsByPatient(patientId);
+            var patientRequests = _testRequestRepo.GetTestRequestsByPatient(patientId);
+
+            var patientAllocationsModel = _mapper.Map<List<TestAllocationVM>>(patientAllocations);
+            var patientRequestsModel = _mapper.Map<List<TestRequestVM>>(patientRequests);
+
+            var model = new PatientTestRequestViewVM
+            {
+                TestAllocations = patientAllocationsModel,
+                TestRequests = patientRequestsModel
+            };
+
+            return View(model);
+        }
+
         // GET: TestRequest/Details/5
         public ActionResult Details(int id)
         {
@@ -163,7 +182,7 @@ namespace test_managment.Controllers
                     return View(model);
                 }
 
-                return RedirectToAction(nameof(Index),"Home");
+                return RedirectToAction("MyTest");
             }
             catch (Exception ex)
             {
@@ -198,24 +217,49 @@ namespace test_managment.Controllers
         // GET: TestRequest/Delete/5
         public ActionResult Delete(int id)
         {
-            
-            return View();
+            var testRequest = _testRequestRepo.FindById(id);
+            var isSuccess = _testRequestRepo.Delete(testRequest);
+
+            if (testRequest == null)
+            {
+                return NotFound();
+            }
+
+            if (!isSuccess)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("MyTest");
         }
 
         // POST: TestRequest/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, TestRequestVM model)
         {
             try
             {
-                // TODO: Add delete logic here
+                var testRequest = _testRequestRepo.FindById(id);
+                var isSuccess = _testRequestRepo.Delete(testRequest);
 
-                return RedirectToAction(nameof(Index));
+                if (testRequest == null)
+                {
+                    return NotFound();
+                }
+
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong...");
+                    return View(model);
+                }
+
+                return RedirectToAction("MyTest");
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong...");
+                return View(model);
             }
         }
     }

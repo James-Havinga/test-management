@@ -47,4 +47,11 @@ namespace test_managment.Models
         public int TestTypeId { get; set; }
 
     }
+
+    public class PatientTestRequestViewVM
+    {
+        public List<TestAllocationVM> TestAllocations { get; set; }
+        public List<TestRequestVM> TestRequests { get; set; }
+
+    }
 }

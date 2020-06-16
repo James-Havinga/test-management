@@ -32,6 +32,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="TestRequest" asp-action="Create">Apply for Testing</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="TestRequest" asp-action="MyTest">My Tests</a>
+                        </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             if (User.IsInRole("Administrator"))
@@ -44,7 +47,7 @@
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="dropdown-item" asp-controller="TestTypes" asp-action="Index">Test Types</a>
                                         <a class="dropdown-item" asp-controller="TestAllocation" asp-action="Index">Test Allocations</a>
-                                        <a class="dropdown-item" asp-controller="TestRequest" asp-action="Index">Test Applications</a>
+                                        <a class="dropdown-item" asp-controller="TestRequest" asp-action="Index">Test Requests</a>
                                         <a class="dropdown-item" asp-controller="TestAllocation" asp-action="ListPatients">Patients</a>
                                     </div>
                                 </li>
