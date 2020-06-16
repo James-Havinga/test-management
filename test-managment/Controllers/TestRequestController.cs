@@ -57,7 +57,52 @@ namespace test_managment.Controllers
         // GET: TestRequest/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var testRequest = _testRequestRepo.FindById(id);
+            var model = _mapper.Map<TestRequestVM>(testRequest);
+            return View(model);
+        }
+
+        public ActionResult ApproveRequest(int id)
+        {
+            try
+            {
+                var user = _userManager.GetUserAsync(User).Result;
+                var testRequest = _testRequestRepo.FindById(id);
+                testRequest.Approved = true;
+                testRequest.ApprovedById = user.Id;
+                testRequest.DateActioned = DateTime.Now;
+
+                var isSuccess = _testRequestRepo.Update(testRequest);
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch ( Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
+        }
+
+        public ActionResult RejectRequest(int id)
+        {
+            try
+            {
+                var user = _userManager.GetUserAsync(User).Result;
+                var testRequest = _testRequestRepo.FindById(id);
+                testRequest.Approved = false;
+                testRequest.ApprovedById = user.Id;
+                testRequest.DateActioned = DateTime.Now;
+
+                var isSuccess = _testRequestRepo.Update(testRequest);
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: TestRequest/Create
@@ -153,6 +198,7 @@ namespace test_managment.Controllers
         // GET: TestRequest/Delete/5
         public ActionResult Delete(int id)
         {
+            
             return View();
         }
 
