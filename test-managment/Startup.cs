@@ -83,7 +83,7 @@ namespace test_managment
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=TestRequest}/{action=MyTest}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

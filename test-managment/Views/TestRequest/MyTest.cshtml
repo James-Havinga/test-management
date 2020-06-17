@@ -4,6 +4,29 @@
     ViewData["Title"] = "MyTest";
 }
 
+
+<h1>My Recommended Test Frequency</h1>
+<div class="jumbotron">
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.TestAllocations){
+            <li class="list-group-item">
+                @if (item.NumberOfDays > 1)
+                {
+                    <h6>1 @item.TestType.Name per <span class="badge badge-secondary">@item.NumberOfDays</span> Days</h6>
+                }
+                else
+                {
+                    <h6>1 @item.TestType.Name per <span class="badge badge-secondary">@item.NumberOfDays</span> Day</h6>
+                }
+
+            </li>
+            }
+        </ul>
+    </div>
+</div>
+
+
 <h1>My Test Records</h1>
 
 <table id="tblData" class="table">
