@@ -35,10 +35,10 @@ namespace test_managment.Controllers
         }
 
         // GET: TestAllocation
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var testTypes = _testrepo.FindAll().ToList();
-            var mappedTestTypes = _mapper.Map<List<TestType>, List<TestTypeVM>>(testTypes);
+            var testTypes = await _testrepo.FindAll();
+            var mappedTestTypes = _mapper.Map<List<TestType>, List<TestTypeVM>>(testTypes.ToList());
             var model = new CreateTestAllocationVM
             {
                 TestTypes = mappedTestTypes,
@@ -48,13 +48,14 @@ namespace test_managment.Controllers
         }
 
 
-        public ActionResult SetTest(int id)
+        public async Task<ActionResult> SetTest(int id)
         {
-            var testType = _testrepo.FindById(id);
-            var patients = _userManager.GetUsersInRoleAsync("Patient").Result;
+            var testType = await _testrepo.FindById(id);
+            var patients = await _userManager.GetUsersInRoleAsync("Patient");
+            
             foreach (var pat in patients)
             {
-                if (_testallocationrepo.CheckAllocation(id, pat.Id))
+                if (await _testallocationrepo.CheckAllocation(id, pat.Id))
                     continue; 
                 var allocation = new TestAllocationVM
                 {
@@ -65,22 +66,22 @@ namespace test_managment.Controllers
                     Period = DateTime.Now.Year,
                 };
                 var testAllocation = _mapper.Map<TestAllocation>(allocation);
-                _testallocationrepo.Create(testAllocation);
+                await _testallocationrepo.Create(testAllocation);
             }
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult ListPatients()
+        public async Task<ActionResult> ListPatients()
         {
-            var patients = _userManager.GetUsersInRoleAsync("Patient").Result;
+            var patients = await _userManager.GetUsersInRoleAsync("Patient");
             var model = _mapper.Map<List<PatientVM>>(patients);
             return View(model);
         }
 
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            var patient = _mapper.Map<PatientVM>(_userManager.FindByIdAsync(id).Result);
-            var allocations = _mapper.Map<List<TestAllocationVM>>(_testallocationrepo.GetTestAllocationsByPatient(id));
+            var patient = _mapper.Map<PatientVM>(await _userManager.FindByIdAsync(id));
+            var allocations = _mapper.Map<List<TestAllocationVM>>(await _testallocationrepo.GetTestAllocationsByPatient(id));
             var model = new ViewAllocationsVM
             {
                 Patient = patient,
@@ -116,9 +117,9 @@ namespace test_managment.Controllers
         }
 
         // GET: TestAllocation/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var testAllocation = _testallocationrepo.FindById(id);
+            var testAllocation = await _testallocationrepo.FindById(id);
             var model = _mapper.Map<EditTestAllocationVM>(testAllocation);
             return View(model);
         }
@@ -126,7 +127,7 @@ namespace test_managment.Controllers
         // POST: TestAllocation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditTestAllocationVM model)
+        public async Task<ActionResult> Edit(EditTestAllocationVM model)
         {
             try
             {
@@ -134,9 +135,9 @@ namespace test_managment.Controllers
                 {
                     return View(model);
                 }
-                var record = _testallocationrepo.FindById(model.Id);
+                var record = await _testallocationrepo.FindById(model.Id);
                 record.NumberOfDays = model.NumberOfDays;
-                var isSuccess = _testallocationrepo.Update(record);
+                var isSuccess = await _testallocationrepo.Update(record);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Error while saving");

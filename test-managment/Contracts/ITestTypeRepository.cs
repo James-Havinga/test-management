@@ -8,6 +8,6 @@ namespace test_managment.Contracts
 {
     public interface ITestTypeRepository : IRepositoryBase<TestType>
     {
-        ICollection<TestType> GetPatientsByTestType(int id);
+        Task<ICollection<TestType>> GetPatientsByTestType(int id);
     }
 }

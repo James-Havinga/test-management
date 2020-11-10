@@ -39,9 +39,9 @@ namespace test_managment.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var testRequests = _testRequestRepo.FindAll();
+            var testRequests = await _testRequestRepo.FindAll();
             var testRequestsModel = _mapper.Map<List<TestRequestVM>>(testRequests);
             var model = new AdminTestRequestViewVM
             {
@@ -54,12 +54,12 @@ namespace test_managment.Controllers
             return View(model);
         }
 
-        public ActionResult MyTest()
+        public async Task<ActionResult> MyTest()
         {
-            var patient = _userManager.GetUserAsync(User).Result;
+            var patient = await _userManager.GetUserAsync(User);
             var patientId = patient.Id;
-            var patientAllocations = _testAllocationRepository.GetTestAllocationsByPatient(patientId);
-            var patientRequests = _testRequestRepo.GetTestRequestsByPatient(patientId);
+            var patientAllocations = await _testAllocationRepository.GetTestAllocationsByPatient(patientId);
+            var patientRequests = await _testRequestRepo.GetTestRequestsByPatient(patientId);
 
             var patientAllocationsModel = _mapper.Map<List<TestAllocationVM>>(patientAllocations);
             var patientRequestsModel = _mapper.Map<List<TestRequestVM>>(patientRequests);
@@ -74,24 +74,24 @@ namespace test_managment.Controllers
         }
 
         // GET: TestRequest/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var testRequest = _testRequestRepo.FindById(id);
+            var testRequest = await _testRequestRepo.FindById(id);
             var model = _mapper.Map<TestRequestVM>(testRequest);
             return View(model);
         }
 
-        public ActionResult ApproveRequest(int id)
+        public async Task<ActionResult> ApproveRequest(int id)
         {
             try
             {
                 var user = _userManager.GetUserAsync(User).Result;
-                var testRequest = _testRequestRepo.FindById(id);
+                var testRequest = await _testRequestRepo.FindById(id);
                 testRequest.Approved = true;
                 testRequest.ApprovedById = user.Id;
                 testRequest.DateActioned = DateTime.Now;
 
-                var isSuccess = _testRequestRepo.Update(testRequest);
+                var isSuccess = await _testRequestRepo.Update(testRequest);
 
                 return RedirectToAction(nameof(Index));
 
@@ -103,17 +103,17 @@ namespace test_managment.Controllers
             
         }
 
-        public ActionResult RejectRequest(int id)
+        public async Task<ActionResult> RejectRequest(int id)
         {
             try
             {
-                var user = _userManager.GetUserAsync(User).Result;
-                var testRequest = _testRequestRepo.FindById(id);
+                var user = await _userManager.GetUserAsync(User);
+                var testRequest = await _testRequestRepo.FindById(id);
                 testRequest.Approved = false;
                 testRequest.ApprovedById = user.Id;
                 testRequest.DateActioned = DateTime.Now;
 
-                var isSuccess = _testRequestRepo.Update(testRequest);
+                var isSuccess = await _testRequestRepo.Update(testRequest);
 
                 return RedirectToAction(nameof(Index));
 
@@ -125,9 +125,9 @@ namespace test_managment.Controllers
         }
 
         // GET: TestRequest/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            var testTypes = _testTypeRepo.FindAll();
+            var testTypes = await _testTypeRepo.FindAll();
             var testTypeItems = testTypes.Select(q => new SelectListItem
             {
                 Text = q.Name,
@@ -143,12 +143,12 @@ namespace test_managment.Controllers
         // POST: TestRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateTestRequestVM model)
+        public async Task<ActionResult> Create(CreateTestRequestVM model)
         {
             
             try
             {
-                var testTypes = _testTypeRepo.FindAll();
+                var testTypes = await _testTypeRepo.FindAll();
                 var testTypeItems = testTypes.Select(q => new SelectListItem
                 {
                     Text = q.Name,
@@ -161,8 +161,8 @@ namespace test_managment.Controllers
                     return View(model);
                 }
                 
-                var patient = _userManager.GetUserAsync(User).Result;
-                var allocation = _testAllocationRepository.GetTestAllocationsByPatientAndType(patient.Id, model.TestTypeId);
+                var patient = await _userManager.GetUserAsync(User);
+                var allocation = await _testAllocationRepository.GetTestAllocationsByPatientAndType(patient.Id, model.TestTypeId);
 
                 var testRequestModel = new TestRequestVM
                 {
@@ -175,7 +175,7 @@ namespace test_managment.Controllers
                 };
 
                 var testRequest = _mapper.Map<TestRequest>(testRequestModel);
-                var isSuccess = _testRequestRepo.Create(testRequest);
+                var isSuccess = await _testRequestRepo.Create(testRequest);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Something went wrong");
@@ -215,10 +215,10 @@ namespace test_managment.Controllers
         }
 
         // GET: TestRequest/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var testRequest = _testRequestRepo.FindById(id);
-            var isSuccess = _testRequestRepo.Delete(testRequest);
+            var testRequest = await _testRequestRepo.FindById(id);
+            var isSuccess = await _testRequestRepo.Delete(testRequest);
 
             if (testRequest == null)
             {
@@ -236,12 +236,12 @@ namespace test_managment.Controllers
         // POST: TestRequest/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, TestRequestVM model)
+        public async Task<ActionResult> Delete(int id, TestRequestVM model)
         {
             try
             {
-                var testRequest = _testRequestRepo.FindById(id);
-                var isSuccess = _testRequestRepo.Delete(testRequest);
+                var testRequest = await _testRequestRepo.FindById(id);
+                var isSuccess = await _testRequestRepo.Delete(testRequest);
 
                 if (testRequest == null)
                 {

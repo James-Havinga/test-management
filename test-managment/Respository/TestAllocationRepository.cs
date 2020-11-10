@@ -17,73 +17,76 @@ namespace test_managment.Respository
             _db = db;
         }
 
-        public bool CheckAllocation(int testTypeId, string patientId)
+        public async Task<bool> CheckAllocation(int testTypeId, string patientId)
         {
             var period = DateTime.Now.Year;
-            return FindAll().Where(q => q.PatientId == patientId && q.TestTypeId == testTypeId && q.Period == period).Any();
+            var allocations = await FindAll();
+            return allocations.Where(q => q.PatientId == patientId && q.TestTypeId == testTypeId && q.Period == period).Any();
         }
 
-        public bool Create(TestAllocation entity)
+        public async Task<bool> Create(TestAllocation entity)
         {
-            _db.TestAllocations.Add(entity);
-            return Save();
+            await _db.TestAllocations.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(TestAllocation entity)
+        public async Task<bool> Delete(TestAllocation entity)
         {
             _db.TestAllocations.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<TestAllocation> FindAll()
+        public async Task<ICollection<TestAllocation>> FindAll()
         {
-            var testAllocations = _db.TestAllocations
+            var testAllocations = await _db.TestAllocations
                 .Include(q => q.TestType)
                 .Include(q => q.Patient)
-                .ToList();
+                .ToListAsync();
             return testAllocations;
         }
 
-        public TestAllocation FindById(int id)
+        public async Task<TestAllocation> FindById(int id)
         {
-            var testAllocations = _db.TestAllocations
+            var testAllocations = await _db.TestAllocations
                 .Include(q => q.TestType)
                 .Include(q => q.Patient)
-                .FirstOrDefault(q => q.Id == id);
+                .FirstOrDefaultAsync(q => q.Id == id);
             return testAllocations;
         }
 
-        public ICollection<TestAllocation> GetTestAllocationsByPatient(string id)
+        public async Task<ICollection<TestAllocation>> GetTestAllocationsByPatient(string id)
         {
             var period = DateTime.Now.Year;
-            return FindAll()
+            var allocations = await FindAll();
+            return allocations
                 .Where(q => q.PatientId == id && q.Period == period)
                 .ToList();
         }
 
-        public TestAllocation GetTestAllocationsByPatientAndType(string id, int testTypeId)
+        public async Task<TestAllocation> GetTestAllocationsByPatientAndType(string id, int testTypeId)
         {
             var period = DateTime.Now.Year;
-            return FindAll()
+            var allocations = await FindAll();
+            return allocations
                 .FirstOrDefault(q => q.PatientId == id && q.Period == period && q.TestTypeId == testTypeId);
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
-            var exists = _db.TestTypes.Any(q => q.Id == id);
+            var exists = await _db.TestTypes.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
             return changes > 0;
         }
 
-        public bool Update(TestAllocation entity)
+        public async Task<bool> Update(TestAllocation entity)
         {
             _db.TestAllocations.Update(entity);
-            return Save();
+            return await Save();
         }
     }
 }

@@ -26,22 +26,23 @@ namespace test_managment.Controllers
 
         
         // GET: TestTypes
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var testTypes = _repo.FindAll().ToList();
-            var model = _mapper.Map<List<TestType>, List<TestTypeVM>>(testTypes);
+            var testTypes = await _repo.FindAll();
+            var model = _mapper.Map<List<TestType>, List<TestTypeVM>>(testTypes.ToList());
             return View(model);
         }
 
         // GET: TestTypes/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            if (!_repo.isExists(id))
+            var isExists = await _repo.isExists(id); 
+            if (isExists)
             {
                 return NotFound();
             }
 
-            var testType = _repo.FindById(id);
+            var testType = await _repo.FindById(id);
             var model = _mapper.Map<TestTypeVM>(testType);
             return View(model);
         }
@@ -55,7 +56,7 @@ namespace test_managment.Controllers
         // POST: TestTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TestTypeVM model)
+        public async Task<ActionResult> Create(TestTypeVM model)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace test_managment.Controllers
                 var testType = _mapper.Map<TestType>(model);
                 testType.DateCreated = DateTime.Now;
 
-                var isSuccess = _repo.Create(testType);
+                var isSuccess = await _repo.Create(testType);
 
                 if (!isSuccess)
                 {
@@ -86,13 +87,14 @@ namespace test_managment.Controllers
         }
 
         // GET: TestTypes/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (!_repo.isExists(id))
+            var isExists = await _repo.isExists(id);
+            if (isExists)
             {
                 return NotFound();
             }
-            var testType = _repo.FindById(id);
+            var testType = await _repo.FindById(id);
             var model = _mapper.Map<TestTypeVM>(testType);
 
             return View(model);
@@ -101,7 +103,7 @@ namespace test_managment.Controllers
         // POST: TestTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TestTypeVM model)
+        public async Task<ActionResult> Edit(TestTypeVM model)
         {
             try
             {
@@ -112,7 +114,7 @@ namespace test_managment.Controllers
                 }
 
                 var testType = _mapper.Map<TestType>(model);
-                var isSuccess = _repo.Update(testType);
+                var isSuccess = await _repo.Update(testType);
 
                 if (!isSuccess)
                 {
@@ -130,11 +132,11 @@ namespace test_managment.Controllers
         }
 
         // GET: TestTypes/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
 
-            var testType = _repo.FindById(id);
-            var isSuccess = _repo.Delete(testType);
+            var testType = await _repo.FindById(id);
+            var isSuccess = await _repo.Delete(testType);
 
             if (testType == null)
             {
@@ -152,13 +154,13 @@ namespace test_managment.Controllers
         // POST: TestTypes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, TestTypeVM model)
+        public async Task<ActionResult> Delete(int id, TestTypeVM model)
         {
             try
             {
                 // TODO: Add delete logic here
-                var testType = _repo.FindById(id);
-                var isSuccess = _repo.Delete(testType);
+                var testType = await _repo.FindById(id);
+                var isSuccess = await _repo.Delete(testType);
 
                 if (testType == null)
                 {

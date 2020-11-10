@@ -16,62 +16,61 @@ namespace test_managment.Respository
         {
             _db = db;
         }
-        public bool Create(TestRequest entity)
+        public async Task<bool> Create(TestRequest entity)
         {
-            _db.TestRequests.Add(entity);
-            return Save();
+            await _db.TestRequests.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(TestRequest entity)
+        public async Task<bool> Delete(TestRequest entity)
         {
             _db.TestRequests.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<TestRequest> FindAll()
+        public async Task<ICollection<TestRequest>> FindAll()
         {
-            var testHistories = _db.TestRequests
+            var testHistories = await _db.TestRequests
                                 .Include(q => q.RequestingPatient)
                                 .Include(q => q.ApprovedBy)
                                 .Include(q => q.TestType)
-                                .ToList();
+                                .ToListAsync();
             return testHistories;
         }
 
-        public TestRequest FindById(int id)
+        public async Task<TestRequest> FindById(int id)
         {
-            var testHistories = _db.TestRequests
+            var testHistories = await _db.TestRequests
                                 .Include(q => q.RequestingPatient)
                                 .Include(q => q.ApprovedBy)
                                 .Include(q => q.TestType)
-                                .FirstOrDefault(q => q.Id == id);
+                                .FirstOrDefaultAsync(q => q.Id == id);
             return testHistories;
         }
 
-        public ICollection<TestRequest> GetTestRequestsByPatient(string patientid)
+        public async Task<ICollection<TestRequest>> GetTestRequestsByPatient(string patientid)
         {
-            var testRequests = FindAll()
-                .Where(q => q.RequestingPatientId == patientid)
+            var testRequests = await FindAll();
+                return testRequests.Where(q => q.RequestingPatientId == patientid)
                 .ToList();
-            return testRequests;
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
-            var exists = _db.TestTypes.Any(q => q.Id == id);
+            var exists = await _db.TestTypes.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
             return changes > 0;
         }
 
-        public bool Update(TestRequest entity)
+        public async Task<bool> Update(TestRequest entity)
         {
             _db.TestRequests.Update(entity);
-            return Save();
+            return await Save();
         }
     }
 }

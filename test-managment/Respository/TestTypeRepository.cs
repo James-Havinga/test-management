@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using test_managment.Contracts;
 using test_managment.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace test_managment.Respository
 {
@@ -15,51 +16,51 @@ namespace test_managment.Respository
         {
             _db = db;
         }
-        public bool Create(TestType entity)
+        public async Task<bool> Create(TestType entity)
         {
-            _db.TestTypes.Add(entity);
-            return Save();
+            await _db.TestTypes.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(TestType entity)
+        public async Task<bool> Delete(TestType entity)
         {
-            _db.TestTypes.Remove(entity);
-            return Save();
+           _db.TestTypes.Remove(entity);
+            return await Save();
         }
 
-        public ICollection<TestType> FindAll()
+        public async Task<ICollection<TestType>> FindAll()
         {
-            var testTypes = _db.TestTypes.ToList();
+            var testTypes = await _db.TestTypes.ToListAsync();
             return testTypes;
         }
 
-        public TestType FindById(int id)
+        public async Task<TestType> FindById(int id)
         {
-            var testType = _db.TestTypes.Find(id);
+            var testType = await _db.TestTypes.FindAsync(id);
             return testType;
         }
 
-        public ICollection<TestType> GetPatientsByTestType(int id)
+        public async Task<ICollection<TestType>> GetPatientsByTestType(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
-            var exists = _db.TestTypes.Any(q => q.Id == id);
+            var exists = await _db.TestTypes.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
             return changes > 0;
         }
 
-        public bool Update(TestType entity)
+        public async Task<bool> Update(TestType entity)
         {
             _db.TestTypes.Update(entity);
-            return Save();
+            return await Save();
         }
     }
 }

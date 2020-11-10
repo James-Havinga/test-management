@@ -8,8 +8,8 @@ namespace test_managment.Contracts
 {
     public interface ITestAllocationRepository : IRepositoryBase<TestAllocation>
     {
-        bool CheckAllocation(int testTypeId, string patientId);
-        ICollection<TestAllocation> GetTestAllocationsByPatient(string id);
-        TestAllocation GetTestAllocationsByPatientAndType(string id, int testTypeId);
+        Task<bool> CheckAllocation(int testTypeId, string patientId);
+        Task<ICollection<TestAllocation>> GetTestAllocationsByPatient(string id);
+        Task<TestAllocation> GetTestAllocationsByPatientAndType(string id, int testTypeId);
     }
 }
